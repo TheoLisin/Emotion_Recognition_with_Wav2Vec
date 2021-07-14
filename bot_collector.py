@@ -2,6 +2,7 @@ import os
 import asyncio
 import logging
 import soundfile as sf
+import librosa
 
 from aiogram import Bot, types
 from aiogram.types import message, reply_keyboard
@@ -10,6 +11,7 @@ from aiogram.utils import executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiohttp.client import request
+from audio_parser import ogg_to_wav
 from dataclasses import dataclass
 from enum import Enum
 from typing import List, Optional, Dict
@@ -67,7 +69,11 @@ async def send_welcome(message: types.Message):
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    text = "Я готов тебя выслушать. Можешь записывать голосовое (лучше на английском). \nЖелательно секунд на 5)"
+    text = "\n".join(["Я готов тебя выслушать.",
+                      "Можешь записать мне эмоциональное голосовое.",
+                      "Или любимую фразу из фильма)",
+                      "\nP.S. Желательно записывать не дольше 5 секунд и на английском."])
+
     await message.answer(text)
 
 
@@ -85,16 +91,13 @@ async def get_audio(message: types.Message, state: FSMContext):
                     state=AudioLoad.waiting_label)
 async def get_label(message: types.Message, state: FSMContext):
     await message.answer(text="Спасибо! Можешь ещё что-нибудь записать")
+
     user_record = await state.get_data()
     last_record_info = user_record['last_record_info']
-    await bot.download_file(last_record_info.file_path, "file.ogg")
-    # record, sr = sf.read(record)
-    # print(type(record))
+    name, ogg_name = create_file_name(message)
+    await bot.download_file(last_record_info.file_path, ogg_name)
+    wav_audio, _ = ogg_to_wav(name)
     await state.finish()
-
-
-async def request_emotion(state: FSMContext):
-    keyboard = get_keyboard(EMOTIONS_BUTTONS_INFO)
 
 
 def get_keyboard(buttons_info: List[ButtonInfo],
@@ -105,6 +108,13 @@ def get_keyboard(buttons_info: List[ButtonInfo],
         button = types.KeyboardButton(**button_info.get_button_params())
         keyboard.add(button)
     return keyboard
+
+
+def create_file_name(message: types.Message, file_format: str = ".ogg"):
+    name = "_".join([str(message.chat.id), str(
+        message.message_id), message.text])
+    format_name = "_".join([name, file_format])
+    return name + '_', format_name
 
 
 async def save_audio():
