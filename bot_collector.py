@@ -1,27 +1,34 @@
 import os
 import asyncio
 import logging
-import soundfile as sf
-import librosa
 
 from aiogram import Bot, types
-from aiogram.types import message, reply_keyboard
 from aiogram.dispatcher import Dispatcher, storage, FSMContext
 from aiogram.utils import executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiohttp.client import request
-from audio_parser import ogg_to_wav
+from audio_parser import save_wav
 from dataclasses import dataclass
 from enum import Enum
+from logger_funcs import start_logging
 from typing import List, Optional, Dict
 
 
 BOT_TOKEN = os.environ['BOT_TOKEN']
+COLLECT_PATH = os.environ['COLLECT_PATH']
+LOGS_FILE = os.environ['LOGS_FILE']
 
 storage = MemoryStorage()
 bot = Bot(token=BOT_TOKEN, timeout=5)
 dp = Dispatcher(bot, storage=storage)
+
+
+logger = logging.getLogger(__name__)
+f_handler = logging.FileHandler(LOGS_FILE)
+f_handler.setLevel(logging.DEBUG)
+f_handler.setFormatter(logging.Formatter('%(message)s'))
+logger.addHandler(f_handler)
 
 
 class AudioLoad(StatesGroup):
@@ -59,11 +66,21 @@ class ButtonInfo():
 
 
 EMOTIONS_BUTTONS_INFO = [ButtonInfo(text=emo.value) for emo in Emotions]
+OTVAL = 'https://memepedia.ru/wp-content/uploads/2019/11/15655259183450.jpg'
+
+
+@dp.message_handler(commands='OTVAL', state="*")
+async def send_otval(message: types.Message):
+    await message.reply_photo(OTVAL, caption="Тестовый отвал")
 
 
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    text = "Hi! I'm a data collector bot!\nI want you to record some emotional voice messages!"
+    text = "".join(["Привет! Я бот-коллектор. Пришёл собрать немного данных)",
+                    "\nТебе нужно будет прислать эмоциональное голосовое сообщение,",
+                    " а затем выбрать одну из восьми эмойций.",
+                    " Если хочешь, запиши пару любимых фраз из фильмов.",
+                    "\n\nP.S. Желательно записывать не дольше 5 секунд и на английском."])
     await message.reply(text)
 
 
@@ -91,12 +108,16 @@ async def get_audio(message: types.Message, state: FSMContext):
                     state=AudioLoad.waiting_label)
 async def get_label(message: types.Message, state: FSMContext):
     await message.answer(text="Спасибо! Можешь ещё что-нибудь записать")
-
     user_record = await state.get_data()
     last_record_info = user_record['last_record_info']
-    name, ogg_name = create_file_name(message)
-    await bot.download_file(last_record_info.file_path, ogg_name)
-    wav_audio, _ = ogg_to_wav(name)
+    name, ogg_name = create_file_name(message, file_path=COLLECT_PATH)
+    try:
+        await bot.download_file(last_record_info.file_path, ogg_name)
+        save_wav(name, COLLECT_PATH)
+    except Exception as unknown_err:
+        await bot.send_photo(state.chat, OTVAL, caption="Произошёл отвал. Сообщите @TedFox!")
+        start_logging(user_id=message.chat.id, file_name=name,
+                      exception=unknown_err, logger=logger)
     await state.finish()
 
 
@@ -110,17 +131,20 @@ def get_keyboard(buttons_info: List[ButtonInfo],
     return keyboard
 
 
-def create_file_name(message: types.Message, file_format: str = ".ogg"):
+def create_file_name(message: types.Message,
+                     file_format: str = ".ogg",
+                     file_path: str = None):
     name = "_".join([str(message.chat.id), str(
         message.message_id), message.text])
+
+    if file_path is not None:
+        name = file_path + name
+
     format_name = "_".join([name, file_format])
     return name + '_', format_name
 
 
-async def save_audio():
-    pass
-
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    logging.info(f">>>> Start logging <<<<")
+    # logging.basicConfig(level=logging.INFO)
+    # logging.info(f">>>> Start logging <<<<")
     executor.start_polling(dp, skip_updates=True)
