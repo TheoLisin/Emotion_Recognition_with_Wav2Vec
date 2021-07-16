@@ -31,6 +31,14 @@ def predict(batches, model, processor, config, sampling_rate, device):
         logits = model(input_values, attention_mask=attention_mask).logits
 
     scores = F.softmax(logits, dim=1).detach().cpu().numpy()[0]
-    outputs = [{"Emotion": config.id2label[i], "Score": f"{round(score * 100, 3):.1f}%"}
+    outputs = [{"Emotion": config.id2label[i], "Score": round(score * 100, 3)}
                for i, score in enumerate(scores)]
     return outputs
+
+
+def get_emo_msg_and_top(emo_dist):
+    msg = "\n".join([f"{d['Emotion']} - {d['Score']}" for d in emo_dist])
+    sort_emo = sorted(emo_dist, key=lambda x: -x['Score'])
+    top_two = (sort_emo[0]["Emotion"], sort_emo[1]["Emotion"])
+    top_two_score = (sort_emo[0]["Score"], sort_emo[1]["Score"])
+    return msg, top_two, top_two_score
