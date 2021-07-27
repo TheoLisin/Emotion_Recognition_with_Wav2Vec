@@ -117,7 +117,7 @@ async def send_welcome(message: types.Message):
 @dp.message_handler(commands=['test', 'full'], state='*')
 async def change_mode(message: types.Message, state: FSMContext):
     await state.finish()
-    if message.text == 'full':
+    if message.text == '/full':
         await message.reply("Пока работает только тест)")
         await PredictAndCollect.test_mode.set()
         # await state.update_data(test=False)
@@ -172,9 +172,14 @@ async def get_label(message: types.Message, state: FSMContext):
     await PredictAndCollect.test_mode.set()
 
 
-@dp.message_handler(content_types=['text'])
+@dp.message_handler(content_types=['text'], state=PredictAndCollect.test_mode)
 async def simple_answer(message: types.Message):
     await message.reply("Я тебя могу послушать, котик")
+
+
+@dp.message_handler(content_types=['text', 'voice'])
+async def simple_answer(message: types.Message):
+    await message.reply("Выбери состояние /test, дурилка")
 
 
 def get_keyboard(buttons_info: List[ButtonInfo],

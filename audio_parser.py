@@ -8,16 +8,14 @@ import numpy as np
 def save_wav(name, new_sr=16000):
     ogg_name = name + ".ogg"
     wav_name = name + ".wav"
-    subprocess.run(['ffmpeg', "-i", "-hide_banner",
-                   "-loglevel", "error", ogg_name, wav_name])
+    subprocess.run(['ffmpeg', "-i", "-hide_banner",  ogg_name, wav_name])
     os.remove(ogg_name)
 
 
 def ogg_to_wav(name, new_sr=16000, save=False):
     ogg_name = name + ".ogg"
     wav_name = name + ".wav"
-    subprocess.run(['ffmpeg', "-i", "-hide_banner",
-                   "-loglevel", "error", ogg_name, wav_name])
+    subprocess.run(['ffmpeg', "-hide_banner", "-i", ogg_name, wav_name])
     audio, sr = librosa.load(wav_name, new_sr)
 
     os.remove(ogg_name)
