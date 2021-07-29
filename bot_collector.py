@@ -194,7 +194,8 @@ def get_keyboard(buttons_info: List[ButtonInfo],
 
 def create_file_name(message: types.Message,
                      file_format: str = ".ogg",
-                     file_path: str = None, text=True):
+                     file_path: str = None, 
+                     text: bool =True):
     if text:
         message_text = message.text
     else:

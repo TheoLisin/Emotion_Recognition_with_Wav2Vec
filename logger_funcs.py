@@ -8,7 +8,7 @@ def start_logging(user_id: str,
                   err_mode: bool = False,
                   exception: str = None,
                   label: str = None,
-                  top_two=None) -> None:
+                  top_two: tp.Optional[tp.Tuple[str]] = None) -> None:
     if err_mode:
         msg = f'{user_id}: \n    FILE: {file_name} \n   ERROR: {exception}'
     else:
