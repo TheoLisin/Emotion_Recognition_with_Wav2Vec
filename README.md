@@ -1,2 +1,35 @@
-# voice_emotion_recognition_Sirius
-Тут должна быть информация о проекте
+# Emotion recognition in English speech
+
+## Model
+(Training process based on [this notebook](https://colab.research.google.com/github/m3hrdadfi/soxan/blob/main/notebooks/Emotion_recognition_in_Greek_speech_using_Wav2Vec2.ipynb#scrollTo=sp37lZOV2042))
+
+The model consists of pre-trained XLSR-Wav2Vec body and classification head. First, the classifier was trained on clear [RAVDESS](https://smartlaboratory.org/ravdess/) dataset (wav2vec weights have been frozen), then the entire model was trained on the same data with added random noise. 
+
+<!-- ![RAVDESS test dataset results](./img/ravdess_res.PNG) -->
+
+<figure>
+  <img
+  src="./img/ravdess_res.PNG"
+  alt="RAVDESS test dataset results">
+  <figcaption>RAVDESS test dataset results</figcaption>
+</figure>
+
+
+*(Model training notebook will be added soon)*
+
+## Emotion recognition bot
+
+Bot was made for testing model on Russian speech (or English with Russian accent :) ). It collected some data (from my friends with their permission) for testing. 
+
+<!-- ![TOP-2 confussion matrix](./img/conf_matrix.PNG) -->
+
+<figure>
+  <img
+  src="./img/conf_matrix.PNG"
+  alt="TOP-2 confussion matrix">
+  <figcaption>TOP-2 confussion matrix</figcaption>
+</figure>
+
+**TOP-1 accuracy: 47%**
+
+**TOP-2 accuracy: 67%**
