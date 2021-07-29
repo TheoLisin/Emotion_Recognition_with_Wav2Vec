@@ -56,6 +56,6 @@ To run the bot, it should be passed the following environment variables:
 
 - ```RES_FILE``` - path to the log file to save the name and emotion 
 
-- ```MODEL_PATH``` - saived pre-trained model with classification head *(Any of [this checpoints](https://drive.google.com/file/d/12t4LwpZosjgvOqMdoQddeY_Xf-bIM4cd/view?usp=sharing))*
+- ```MODEL_PATH``` - saived pre-trained model with classification head *(Any of [this checkpoints](https://drive.google.com/file/d/12t4LwpZosjgvOqMdoQddeY_Xf-bIM4cd/view?usp=sharing))*
 
 - ```HF_MODEL``` - pre-trained model from Huggingface for processor *("jonatasgrosman/wav2vec2-large-xlsr-53-english")*
