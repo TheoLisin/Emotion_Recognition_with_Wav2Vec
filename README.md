@@ -7,13 +7,14 @@ The model consists of pre-trained XLSR-Wav2Vec body and classification head. Fir
 
 <!-- ![RAVDESS test dataset results](./img/ravdess_res.PNG) -->
 
+<!--
 <figure>
   <img
   src="./img/ravdess_res.PNG"
   alt="RAVDESS test dataset results">
   <figcaption>RAVDESS test dataset results</figcaption>
 </figure>
-
+-->
 
 *(Model training notebook will be added soon)*
 
