@@ -183,7 +183,8 @@ async def simple_answer(message: types.Message):
 
 
 def get_keyboard(buttons_info: List[ButtonInfo],
-                 resize=True, one_time_kb=True) -> types.ReplyKeyboardMarkup:
+                 resize: bool = True,
+                 one_time_kb: bool = True) -> types.ReplyKeyboardMarkup:
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=resize,
                                          one_time_keyboard=one_time_kb)
     for button_info in buttons_info:
