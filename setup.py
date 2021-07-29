@@ -1,4 +1,5 @@
 import setuptools
+import sys
 
 with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
@@ -23,19 +24,15 @@ setuptools.setup(
         "Programming Language :: Python :: 3.7"
         "Programming Language :: Python :: 3.8"
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.6', 
     install_requires=['aiogram', 
                       'asyncio', 
                       'datasets', 
                       'transformers', 
                       'logging', 
-                      'numpy', 
-                      'torch==1.9.0+cu102; platform_system == "Windows"',
-                      'torchvision==0.10.0+cu102; platform_system == "Windows"',
-                      'torchaudio===0.9.0; platform_system == "Windows"',
-                      'torch; platform_system == "Linux"',
-                      'torchvision ; platform_system == "Linux"',
-                      'torchaudio; platform_system == "Linux"'],
+                      'numpy'] + \
+                     ['torch==1.9.0+cu102', 'torchvision==0.10.0+cu102', 'torchaudio===0.9.0'] if "win" in sys.platform \
+                        else ['torch', 'torchvision', 'torchaudio'],
     entry_points={
         'console_scripts': [              
             'emo_bot=emo_recognition_bot.emo_bot:main',
