@@ -24,7 +24,18 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8"
     ],
     python_requires='>=3.6',
-    install_requires=['torch', 'torchaudio', 'aiogram', 'asyncio', 'datasets', 'transformers', 'logging', 'numpy', ],
+    install_requires=['aiogram', 
+                      'asyncio', 
+                      'datasets', 
+                      'transformers', 
+                      'logging', 
+                      'numpy', 
+                      'torch==1.9.0+cu102; platform_system == "Windows"',
+                      'torchvision==0.10.0+cu102; platform_system == "Windows"',
+                      'torchaudio===0.9.0; platform_system == "Windows"',
+                      'torch; platform_system == "Linux"',
+                      'torchvision ; platform_system == "Linux"',
+                      'torchaudio; platform_system == "Linux"'],
     entry_points={
         'console_scripts': [              
             'emo_bot=emo_recognition_bot.emo_bot:main',
