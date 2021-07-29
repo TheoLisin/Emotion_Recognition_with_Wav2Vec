@@ -34,3 +34,28 @@ Bot was made for testing model on Russian speech (or English with Russian accent
 **TOP-1 accuracy: 47%**
 
 **TOP-2 accuracy: 67%**
+
+
+## Installation
+
+To install on package on **Windows** use 
+```pip install . -f https://download.pytorch.org/whl/torch_stable.html```
+
+To install on package on **Linux** use 
+```pip install .```
+
+To run the bot, it should be passed the following environment variables:
+
+- ```BOT_TOKEN``` - bot token (from @BotFatherBot)
+
+- ```COLLECT_PATH``` - path to collect voice
+
+- ```LOGS_FILE``` - path to log errors
+
+- ```TEMP_PATH``` - 
+
+- ```RES_FILE``` - path to the log file to save the name and emotion 
+
+- ```MODEL_PATH``` - saived pre-trained model with classification head *(Any of [this checpoints](https://drive.google.com/file/d/12t4LwpZosjgvOqMdoQddeY_Xf-bIM4cd/view?usp=sharing))*
+
+- ```HF_MODEL``` - pre-trained model from Huggingface for processor *("jonatasgrosman/wav2vec2-large-xlsr-53-english")*
