@@ -15,6 +15,7 @@ setuptools.setup(
     url='https://github.com/TheoLisin/Emotion_Recognition_with_Wav2Vec',
     package_dir={'': 'src'},
     packages=setuptools.find_packages(where='src'),
+    version="0.1.0",
     classifiers=[
         # see https://pypi.org/classifiers/
         "Development Status :: 1 - Alpha",
@@ -29,9 +30,9 @@ setuptools.setup(
                       'asyncio', 
                       'datasets', 
                       'transformers', 
-                      'logging', 
-                      'numpy'] + \
-                     ['torch==1.9.0+cu102', 'torchvision==0.10.0+cu102', 'torchaudio===0.9.0'] if "win" in sys.platform \
+                      'numpy',
+                      'librosa'] + \
+                     ['torch==1.9.0+cu102', 'torchvision==0.10.0+cu102', 'torchaudio===0.9.0', 'huggingface-hub==0.0.12'] if "win" in sys.platform \
                         else ['torch', 'torchvision', 'torchaudio'],
     entry_points={
         'console_scripts': [              
