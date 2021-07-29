@@ -11,12 +11,12 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiohttp.client import request
 from numpy.testing._private.utils import measure
-from audio_parser import save_wav, ogg_to_wav
+from emo_recognition_bot.audio_parser import save_wav, ogg_to_wav
 from dataclasses import dataclass
 from enum import Enum
 from logger_funcs import start_logging
 from typing import List, Optional, Dict
-from model_funcs import load_model, predict, get_emo_msg_and_top
+from emo_recognition_bot.model_funcs import load_model, predict, get_emo_msg_and_top
 
 
 BOT_TOKEN = os.environ['BOT_TOKEN']

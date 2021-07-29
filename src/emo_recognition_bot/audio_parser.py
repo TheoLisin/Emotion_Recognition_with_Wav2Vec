@@ -1,7 +1,6 @@
 import os
 import subprocess
 import librosa
-import noisereduce as nr
 import numpy as np
 
 
@@ -23,10 +22,6 @@ def ogg_to_wav(name, new_sr=16000, save=False):
         os.remove(wav_name)
 
     return audio, sr
-
-
-def denoise_transformer(audio):
-    return nr.reduce_noise(audio, audio)
 
 
 def splitter(audio, sr=16000):

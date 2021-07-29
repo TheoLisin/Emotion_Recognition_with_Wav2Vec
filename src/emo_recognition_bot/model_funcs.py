@@ -2,7 +2,7 @@ import torch
 import torch.nn.functional as F
 
 from transformers import AutoConfig, Wav2Vec2Processor
-from model_class import Wav2Vec2ForSpeechClassification, SpeechClassifierOutput
+from emo_recognition_bot.model_class import Wav2Vec2ForSpeechClassification, SpeechClassifierOutput
 
 
 def load_model(model_path, pretrained_model_path=None):
