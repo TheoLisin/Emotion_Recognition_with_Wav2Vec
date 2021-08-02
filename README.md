@@ -1,5 +1,10 @@
 # Emotion recognition in English speech
 
+## Motivation
+
+I did this project in order to learn how to work with audio, transformers and pretrained models. The concept of emotion is not strictly defined from the point of view of science, so you should not take this model seriously. Most likely, it works no better than a polygraph or physiognomy (this is pseudoscience). 
+Keep this in mind and have fun. 
+
 ## Installation
 
 To install on package on **Windows** use 
